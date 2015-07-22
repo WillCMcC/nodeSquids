@@ -19,9 +19,11 @@
         {{test}}
       </div>
       <div ng-repeat="marker in markers">
+        <p>{{marker[0]}}</p>
+        <p>{{marker[1]}}</p>
         <ui-gmap-marker
-          idKey='{marker[0]}'
-          coords= '{marker[1]}'
+          idKey = marker[0]
+          coords = marker[1]
           >
         </ui-gmap-marker>
       </div>
