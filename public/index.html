@@ -1,9 +1,15 @@
   <html>
     <head>
       <title>Squid Maps</title>
+      <style>
+      .angular-google-map-container
+      { height: 400px; }
+      </style>
       <script src="bower_components/angular/angular.js"></script>
+      <script src="bower_components/underscore/underscore-min.js"></script>
+      <script src="bower_components/lodash/lodash.min.js"></script>
       <script src="bower_components/angular-route/angular-route.js"></script>
-      <script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
+      <script src='https:maps.googleapis.com/maps/api/js?sensor=false'></script>
       <script src='bower_components/angular-google-maps/dist/angular-google-maps.min.js'></script>
       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
       <script src="squidApp.js"></script>
@@ -12,8 +18,13 @@
       <div>
         {{test}}
       </div>
-      <div ng-repeat="post in posts">
-            {{post}}
+      <div ng-repeat="marker in markers">
+        <ui-gmap-marker
+          idKey='{marker[0]}'
+          coords= '{marker[1]}'
+          >
+        </ui-gmap-marker>
       </div>
+      <ui-gmap-google-map center='map.center' zoom='map.zoom'></ui-gmap-google-map>
     </body>
   </html>
