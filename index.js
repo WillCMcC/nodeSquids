@@ -86,6 +86,15 @@ router.route('/test')
 		router.route('/new_squid')
 		.post(function(req, res, next) {
 			console.log(req.body)
+			var squid = new Squid({
+				lat : req.body.latitude,
+				long: req.body.longitude,
+				img_paths: [ '/squid1.jpg', '/squid2.jpg' ]
+				});
+				squid.save(function (err, data) {
+				if (err) console.log(err);
+				else console.log('Saved : ', data );
+				});
 			})
 
 	});
