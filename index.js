@@ -5,7 +5,10 @@ var port = 6969;
 var http = require("http");
 var express = require("express");
 var mongoose = require("mongoose");
+var bodyParser = require("body-parser");
 var app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 //Server
 var server = http.createServer(app);
@@ -62,6 +65,8 @@ var router = express.Router();              // get an instance of the express Ro
 router.use(function(req, res, next) {
     // do logging
     console.log('Something is happening.');
+
+
     next(); // make sure we go to the next routes and don't stop here
 });
 
@@ -77,7 +82,13 @@ router.route('/test')
                 res.send(err);
             res.json(squids);
         });
-    });
+
+		router.route('/new_squid')
+		.post(function(req, res, next) {
+			console.log(req.body)
+			})
+
+	});
 
 // more routes for our API will happen here
 

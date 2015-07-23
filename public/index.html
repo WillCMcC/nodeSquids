@@ -27,7 +27,15 @@
             >
           </ui-gmap-marker>
         </div>
+        </ui-gmap-google-map>
+        <div ng-controller="submitController">
+          <form novalidate class="simple-form">
+              Latitude: <input type="number" ng-model="squid.latitude" /><br />
+              Longitude: <input type="number" ng-model="squid.longitude" /><br />
+              <input type="submit" ng-click="update(squid)" value="Save" />
+          </form>
+        </div>
 
-      </ui-gmap-google-map>
+
     </body>
   </html>

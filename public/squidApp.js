@@ -24,3 +24,23 @@ function($scope, $http){
   });
   $scope.map = { center: { latitude: 37.805375, longitude: -122.420868 }, zoom: 14 };
 }]);
+
+app.controller('submitController', ['$scope', '$http', function($scope, $http) {
+
+    $scope.squids = {};
+
+    $scope.update = function(squid) {
+      $scope.squids = angular.copy(squid);
+      console.log($scope.squids);
+      $http.post('/api/new_squid', $scope.squids).
+        success(function(data, status, headers, config) {
+          console.log(data);
+        }).
+        error(function(data, status, headers, config) {
+          console.log('err')
+        });
+    };
+
+    }
+
+]);
