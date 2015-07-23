@@ -60,22 +60,17 @@ var Squid = mongoose.model('Squid', squidSchema);
 
 // API
 
-var router = express.Router();              // get an instance of the express Router
+var apirouter = express.Router();              // get an instance of the express Router
 
 // middleware to use for all requests
-router.use(function(req, res, next) {
+apirouter.use(function(req, res, next) {
     // do logging
     console.log('Something is happening.');
-
-
     next(); // make sure we go to the next routes and don't stop here
 });
 
-// test route to make sure everything is working (accessed at GET http://localhost:8080/api)
-router.get('/', function(req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });
-});
-router.route('/test')
+
+apirouter.route('/test')
 
 	.get(function(req, res) {
         Squid.find(function(err, squids) {
@@ -84,7 +79,7 @@ router.route('/test')
             res.json(squids);
         });
 
-		router.route('/new_squid')
+		apirouter.route('/new_squid')
 		.post( multipartMiddleware, function(req, res, next) {
 			var newerPath ;
 			fs.readFile(req.files.file.path, function (err, data) {
@@ -115,4 +110,16 @@ router.route('/test')
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
-app.use('/api', router);
+app.use('/api', apirouter);
+
+var viewRoutes = express.Router();
+viewRoutes.use(function(req, res, next) {
+    // do logging
+    console.log('Something is view wise.');
+    next(); // make sure we go to the next routes and don't stop here
+});
+viewRoutes.route('/add')
+.get(function(req, res) {
+			res.sendfile('./public/add.html');
+});
+app.use('/', viewRoutes);

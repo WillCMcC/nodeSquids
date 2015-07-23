@@ -26,12 +26,12 @@
           border: 5px dashed blue;
           }
       </style>
-      <script src="bower_components/angular/angular.js"></script>
+      <script src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
+      <script src="bower_components/angular/angular.min.js"></script>
       <script src="bower_components/underscore/underscore-min.js"></script>
       <script src="bower_components/ng-file-upload/ng-file-upload.min.js"></script>
-      <script src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
       <script src="bower_components/lodash/lodash.min.js"></script>
-      <script src="bower_components/angular-route/angular-route.js"></script>
+      <script src="bower_components/angular-route/angular-route.min.js"></script>
       <script src='https:maps.googleapis.com/maps/api/js?sensor=false'></script>
       <script src='bower_components/angular-google-maps/dist/angular-google-maps.min.js'></script>
       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
@@ -44,24 +44,13 @@
         {{test}}
       </div>
 
-      <!-- <ui-gmap-google-map center='map.center' zoom='map.zoom'>
-        <div ng-repeat="marker in markers">
-          <ui-gmap-marker
-            idKey = "marker[0]"
-            coords = "marker[1]"
-            >
-          </ui-gmap-marker>
-        </div>
-        </ui-gmap-google-map> -->
-        <div id="somecomponent" style="width: 500px; height: 400px;"></div>
-        <div  ng-controller="uploader">
-          </br></br>
-          Latitude<input type="latitude" ng-model="squid.lat" id="squidLat">
-          Longitude<input type="longitude" ng-model="squid.long" id="squidLong"></br></br>
-          <div class="button" ngf-select ng-model="files" ngf-multiple="multiple" ng-click="press()">Select File</div>
-          </div>
-        </div>
+      <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+        <ui-gmap-markers models="markers" coords="'coords'" >
+      </ui-gmap-markers>
+        </ui-gmap-google-map>
+        <a class="button" href="/add">Add New Squid</a>
 
+        </div>
 
     </body>
   </html>

@@ -4,61 +4,63 @@ app.controller('MainCtrl', [
 '$scope',
 '$http',
 function($scope, $http){
+$scope.map = { center: { latitude: 37.79, longitude: -122.420868 }, zoom: 13 };
   $http.get('/api/test').
   success(function(data, status, headers, config) {
     $scope.squids = data;
     $scope.markers = [];
-    for(var i=0;i<data.length;i++){
-      var obj = {};
-      obj.latitude = data[i].lat;
-      obj.longitude = data[i].long;
-      $scope.markers.push([i, obj]);
-      if(i == data.length - 1){
-        console.log($scope.markers);
+      for(var i=0;i<data.length;i++){
+      var obj = {
+        id: i,
+        coords: {
+          latitude: data[i].lat,
+          longitude: data[i].long,
+        },
       }
+      $scope.markers.push(obj);
     }
+    console.log("done with init load")
   }).
   error(function(data, status, headers, config) {
     // called asynchronously if an error occurs
     // or server returns response with an error status.
   });
-  $scope.map = { center: { latitude: 37.805375, longitude: -122.420868 }, zoom: 14 };
+
 }]);
 
 
 //inject angular file upload directives and services.
-app.controller('uploader', ['$scope', 'Upload', '$timeout', function ($scope, Upload, $timeout) {
+app.controller('uploader', ['$scope', 'Upload', '$timeout', '$window', function ($scope, Upload, $timeout, $window) {
     function init() {
+      $('#somecomponent').locationpicker(
+        {
+            location: { latitude: 37.79, longitude: -122.420868 },
+            zoom: 13,
+            radius: 0,
+            inputBinding: {
+                latitudeInput: $('#squidLat'),
+                longitudeInput: $('#squidLong')
+            }
+        }
+      );
         var userLoc = {};
         $scope.squid = {};
         // jquery lol
         if ("geolocation" in navigator) {
           navigator.geolocation.getCurrentPosition(function(position) {
-            userLoc.latitude = position.coords.latitude;
-            userLoc.longitude = position.coords.longitude;
+            userLoc.lat = position.coords.latitude;
+            userLoc.lng = position.coords.longitude;
             console.log(userLoc);
-            $('#somecomponent').locationpicker(
-              {
-                  location: userLoc,
-                  radius: 0,
-                  inputBinding: {
-                      latitudeInput: $('#squidLat'),
-                      longitudeInput: $('#squidLong')
-                  }
-        	    }
-            );
-          });
-        } else {
-          $('#somecomponent').locationpicker(
-            {
-                location: {longitude:-122.415232, latitude:37.7761986},
-                radius: 0,
-                inputBinding: {
-                    latitudeInput: $('#squidLat'),
-                    longitudeInput: $('#squidLong')
-                }
-            }
-          );
+            var map = $('#somecomponent').locationpicker('map');
+            var marker = $('#somecomponent').locationpicker('marker');
+            $('#squidLat').val(userLoc.lat)
+            $('#squidLong').val(userLoc.lng)
+            map.map.setCenter(userLoc);
+            map.marker.setPosition(userLoc);
+            map.map.setZoom(16);
+        })
+      } else {
+
         }
 
 
@@ -91,6 +93,7 @@ app.controller('uploader', ['$scope', 'Upload', '$timeout', function ($scope, Up
                     },
                     file: file
                 }).progress(function (evt) {
+                  $window.location.href = './';
                     var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                     $scope.log = 'progress: ' + progressPercentage + '% ' +
                                 evt.config.file.name + '\n' + $scope.log;
@@ -99,6 +102,8 @@ app.controller('uploader', ['$scope', 'Upload', '$timeout', function ($scope, Up
                         $scope.log = 'file: ' + config.file.name + ', Response: ' + JSON.stringify(data) + '\n' + $scope.log;
                     });
                 });
+
+
             }
         }
     };
