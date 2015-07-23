@@ -5,10 +5,11 @@ var port = 6969;
 var http = require("http");
 var express = require("express");
 var mongoose = require("mongoose");
-var bodyParser = require("body-parser");
+var multipart = require('connect-multiparty');
+var fs = require('fs');
+var multipartMiddleware = multipart();
 var app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+
 
 //Server
 var server = http.createServer(app);
@@ -44,18 +45,18 @@ var squidSchema = new Schema({
 // Schema to DB Model
 var Squid = mongoose.model('Squid', squidSchema);
 
-//Test DB Object
-var squid = new Squid({
-lat : 37.805375,
-long: -122.420868,
-img_paths: [ '/squid1.jpg', '/squid2.jpg' ]
-});
-
- //Save DB Object
-squid.save(function (err, data) {
-if (err) console.log(err);
-else console.log('Saved : ', data );
-});
+// //Test DB Object
+// var squid = new Squid({
+// lat : 37.805375,
+// long: -122.420868,
+// img_paths: [ '/squid1.jpg', '/squid2.jpg' ]
+// });
+//
+//  //Save DB Object
+// squid.save(function (err, data) {
+// if (err) console.log(err);
+// else console.log('Saved : ', data );
+// });
 
 // API
 
@@ -84,17 +85,27 @@ router.route('/test')
         });
 
 		router.route('/new_squid')
-		.post(function(req, res, next) {
-			console.log(req.body)
-			var squid = new Squid({
-				lat : req.body.latitude,
-				long: req.body.longitude,
-				img_paths: [ '/squid1.jpg', '/squid2.jpg' ]
+		.post( multipartMiddleware, function(req, res, next) {
+			var newerPath ;
+			fs.readFile(req.files.file.path, function (err, data) {
+				var nameString = "/uploads/"
+				nameString += req.files.file.name;
+				newerPath =  __dirname +  nameString;
+			  fs.writeFile(newerPath, data, function (err) {
+					if(err){console.log(err)}
+					var squid = new Squid({
+						lat : req.body.latitude,
+						long: req.body.longitude,
+						img_paths: newerPath,
+						});
+						squid.save(function (err, data) {
+						if (err) console.log(err);
+						else console.log('Saved : ', data );
+						});
 				});
-				squid.save(function (err, data) {
-				if (err) console.log(err);
-				else console.log('Saved : ', data );
-				});
+			});
+
+
 			})
 
 	});
