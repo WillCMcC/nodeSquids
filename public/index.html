@@ -58,14 +58,7 @@
           </br></br>
           Latitude<input type="latitude" ng-model="squid.lat" id="squidLat">
           Longitude<input type="longitude" ng-model="squid.long" id="squidLong"></br></br>
-          watching model:
           <div class="button" ngf-select ng-model="files" ngf-multiple="multiple" ng-click="press()">Select File</div>
-          Files:
-            <ul>
-                <li ng-repeat="f in files" style="font:smaller">{{f.name}}</li>
-            </ul>
-          Upload Log:
-            <pre>{{log}}</pre>
           </div>
         </div>
 

@@ -29,18 +29,39 @@ function($scope, $http){
 //inject angular file upload directives and services.
 app.controller('uploader', ['$scope', 'Upload', '$timeout', function ($scope, Upload, $timeout) {
     function init() {
+        var userLoc = {};
         $scope.squid = {};
         // jquery lol
-        $('#somecomponent').locationpicker(
-          {
-              location: {latitude: 37, longitude: -122},
-              radius: 0,
-              inputBinding: {
-                  latitudeInput: $('#squidLat'),
-                  longitudeInput: $('#squidLong')
-              }
-    	    }
-        );
+        if ("geolocation" in navigator) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            userLoc.latitude = position.coords.latitude;
+            userLoc.longitude = position.coords.longitude;
+            console.log(userLoc);
+            $('#somecomponent').locationpicker(
+              {
+                  location: userLoc,
+                  radius: 0,
+                  inputBinding: {
+                      latitudeInput: $('#squidLat'),
+                      longitudeInput: $('#squidLong')
+                  }
+        	    }
+            );
+          });
+        } else {
+          $('#somecomponent').locationpicker(
+            {
+                location: {longitude:-122.415232, latitude:37.7761986},
+                radius: 0,
+                inputBinding: {
+                    latitudeInput: $('#squidLat'),
+                    longitudeInput: $('#squidLong')
+                }
+            }
+          );
+        }
+
+
 
     }
     init();
