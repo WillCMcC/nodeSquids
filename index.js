@@ -25,7 +25,7 @@ app.use(express.static(__dirname + '/public'));
 
 //Mongo Intialization
 
-mongoose.connect('mongodb://localhost/squidMaps');
+mongoose.connect('mongodb://localhost/squidMaps3');
 var db = mongoose.connection;
 db.on('error', function (err) {
 	console.log('connection error', err);
@@ -83,7 +83,7 @@ apirouter.route('/test')
 		.post( multipartMiddleware, function(req, res, next) {
 			var newerPath ;
 			fs.readFile(req.files.file.path, function (err, data) {
-				var nameString = "/uploads/"
+				var nameString = "/public/pictures/"
 				nameString += req.files.file.name;
 				newerPath =  __dirname +  nameString;
 				console.log(nameString);
@@ -92,7 +92,7 @@ apirouter.route('/test')
 					var squid = new Squid({
 						lat : req.body.latitude,
 						long: req.body.longitude,
-						img_paths: newerPath,
+						img_paths: "/pictures/" + req.files.file.name,
 						});
 						squid.save(function (err, data) {
 						if (err) console.log(err);
