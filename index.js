@@ -86,6 +86,7 @@ apirouter.route('/test')
 				var nameString = "/uploads/"
 				nameString += req.files.file.name;
 				newerPath =  __dirname +  nameString;
+				console.log(nameString);
 			  fs.writeFile(newerPath, data, function (err) {
 					if(err){console.log(err)}
 					var squid = new Squid({
@@ -121,5 +122,9 @@ viewRoutes.use(function(req, res, next) {
 viewRoutes.route('/add')
 .get(function(req, res) {
 			res.sendfile('./public/add.html');
+});
+viewRoutes.route('/all_squids')
+.get(function(req, res) {
+			res.sendfile('./public/all_squids.html');
 });
 app.use('/', viewRoutes);

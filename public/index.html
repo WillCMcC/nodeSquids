@@ -3,7 +3,9 @@
       <title>Squid Maps</title>
       <style>
           .angular-google-map-container
-          { height: 400px; }
+          { height: 70%;
+            width: 100%;
+            }
           .button {
           -moz-appearance: button;
           /* Firefox */
@@ -36,20 +38,45 @@
       <script src='bower_components/angular-google-maps/dist/angular-google-maps.min.js'></script>
       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
       <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+      <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+      <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
       <script src="locationpicker.js"></script>
       <script src="squidApp.js"></script>
+
+
+      <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Squid Maps</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Squid Management <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/add">Add Squid</a></li>
+            <li><a href="/all_squids">View All Squids</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
     </head>
     <body ng-app='squidApp' ng-controller="MainCtrl">
-      <div>
-        {{test}}
-      </div>
-
       <ui-gmap-google-map center='map.center' zoom='map.zoom'>
-        <ui-gmap-markers models="markers" coords="'coords'" >
+        <ui-gmap-markers models="markers" coords="'coords'">
       </ui-gmap-markers>
         </ui-gmap-google-map>
-        <a class="button" href="/add">Add New Squid</a>
-
         </div>
 
     </body>

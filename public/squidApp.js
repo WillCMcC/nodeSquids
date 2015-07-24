@@ -8,6 +8,7 @@ $scope.map = { center: { latitude: 37.79, longitude: -122.420868 }, zoom: 13 };
   $http.get('/api/test').
   success(function(data, status, headers, config) {
     $scope.squids = data;
+    console.log(data);
     $scope.markers = [];
       for(var i=0;i<data.length;i++){
       var obj = {
@@ -50,7 +51,7 @@ app.controller('uploader', ['$scope', 'Upload', '$timeout', '$window', function 
           navigator.geolocation.getCurrentPosition(function(position) {
             userLoc.lat = position.coords.latitude;
             userLoc.lng = position.coords.longitude;
-            console.log(userLoc);
+              console.log(userLoc);
             var map = $('#somecomponent').locationpicker('map');
             var marker = $('#somecomponent').locationpicker('marker');
             $('#squidLat').val(userLoc.lat)

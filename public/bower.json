@@ -19,6 +19,7 @@
     "angular": "~1.4.3",
     "angular-google-maps": "~2.1.5",
     "angular-route": "~1.4.3",
-    "ng-file-upload": "~5.0.9"
+    "ng-file-upload": "~5.0.9",
+    "bootstrap": "~3.3.5"
   }
 }

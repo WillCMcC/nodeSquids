@@ -1,0 +1,20 @@
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/underscore/underscore-min.js"></script>
+<script src="bower_components/ng-file-upload/ng-file-upload.min.js"></script>
+<script src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
+<script src="bower_components/lodash/lodash.min.js"></script>
+<script src="bower_components/angular-route/angular-route.min.js"></script>
+<script src='https:maps.googleapis.com/maps/api/js?sensor=false'></script>
+<script src='bower_components/angular-google-maps/dist/angular-google-maps.min.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="locationpicker.js"></script>
+<script src="squidApp.js"></script><div ng-app='squidApp' ng-controller="MainCtrl">
+<div ng-repeat="squid in squids">
+    <div ng-repeat="picture in squid.img_paths">
+      {{squid.lat}}, {{squid.long}}
+      {{picture}}
+      <img src = {{picture}}></img>
+    </div>
+</div>
+</div>
