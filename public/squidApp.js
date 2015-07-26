@@ -79,7 +79,7 @@ app.controller('uploader', ['$scope', 'Upload', '$timeout', '$window', function 
             $('#squidLong').val(userLoc.lng)
             map.map.setCenter(userLoc);
             map.marker.setPosition(userLoc);
-            map.map.setZoom(16);
+            map.map.setZoom(15);
         })
       } else {
 
