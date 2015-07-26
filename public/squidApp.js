@@ -4,12 +4,25 @@ app.controller('MainCtrl', [
 '$scope',
 '$http',
 function($scope, $http){
-$scope.map = { center: { latitude: 37.79, longitude: -122.420868 }, zoom: 13 };
+$scope.map = {
+  center: { latitude: 37.79, longitude: -122.420868 },
+  zoom: 13,
+  options: {
+    mapTypeControl: false,
+
+  }
+};
+
+
   $http.get('/api/test').
   success(function(data, status, headers, config) {
     $scope.squids = data;
     console.log(data);
     $scope.markers = [];
+    $scope.markers.options = {
+
+    }
+
       for(var i=0;i<data.length;i++){
       var obj = {
         id: i,
@@ -17,9 +30,17 @@ $scope.map = { center: { latitude: 37.79, longitude: -122.420868 }, zoom: 13 };
           latitude: data[i].lat,
           longitude: data[i].long,
         },
+        img_paths: data[i].img_paths[0],
+
+        show: false
       }
-      $scope.markers.push(obj);
-    }
+        obj.onClick = function(a,b,c){
+            console.log(a)
+            a.model.show = !a.model.show;
+
+        }
+        $scope.markers.push(obj);
+      }
     console.log("done with init load")
   }).
   error(function(data, status, headers, config) {
@@ -70,35 +91,42 @@ app.controller('uploader', ['$scope', 'Upload', '$timeout', '$window', function 
     init();
 
     $scope.$watch('files', function () {
+      $scope.files.lat = $('#squidLat').val();
+      $scope.files.long = $('#squidLong').val();
         $scope.upload($scope.files);
     });
     $scope.log = '';
 
     $scope.press = function() {
 
-      $scope.squid.lat = $('#squidLat').val();
-      $scope.squid.long = $('#squidLong').val();
-      console.log($scope.squid);
+
+      console.log("test");
 
     }
 
     $scope.upload = function (files) {
         if (files && files.length) {
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i];
+            for (var i = 0; i < 1; i++) {
+                var file = files[0];
+                console.log($scope.files)
                 Upload.upload({
                     url: '/api/new_squid',
                     fields: {
-                        'latitude': $scope.squid.lat,
-                        'longitude': $scope.squid.long
+                        'latitude': files.lat,
+                        'longitude': files.long
                     },
                     file: file
                 }).progress(function (evt) {
-                  $window.location.href = './';
+
                     var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                     $scope.log = 'progress: ' + progressPercentage + '% ' +
                                 evt.config.file.name + '\n' + $scope.log;
+                  if(progressPercentage == 100){
+                    $window.location.href = './';
+                  }
+
                 }).success(function (data, status, headers, config) {
+                    console.log("success")
                     $timeout(function() {
                         $scope.log = 'file: ' + config.file.name + ', Response: ' + JSON.stringify(data) + '\n' + $scope.log;
                     });
@@ -109,3 +137,11 @@ app.controller('uploader', ['$scope', 'Upload', '$timeout', '$window', function 
         }
     };
 }]);
+app.controller('controlCtrl', function ($scope, $window) {
+        $scope.controlText = 'Add Squid';
+        $scope.danger = false;
+        $scope.controlClick = function () {
+            $scope.danger = !$scope.danger;
+            $window.location.href = './add';
+        };
+    });

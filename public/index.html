@@ -3,7 +3,7 @@
       <title>Squid Maps</title>
       <style>
           .angular-google-map-container
-          { height: 70%;
+          { height: 100%;
             width: 100%;
             }
           .button {
@@ -27,6 +27,10 @@
           .dragover {
           border: 5px dashed blue;
           }
+          .huge{
+            min-height: 10%;
+            min-width: 25%
+          }
       </style>
       <script src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
       <script src="bower_components/angular/angular.min.js"></script>
@@ -39,43 +43,35 @@
       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
       <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
       <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-      <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+      <link rel="stylesheet" href="/bower_components/materialize/css/materialize.min.css">
       <script src="locationpicker.js"></script>
       <script src="squidApp.js"></script>
 
 
-      <nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Squid Maps</a>
-    </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Squid Management <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="/add">Add Squid</a></li>
-            <li><a href="/all_squids">View All Squids</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
     </head>
     <body ng-app='squidApp' ng-controller="MainCtrl">
-      <ui-gmap-google-map center='map.center' zoom='map.zoom'>
-        <ui-gmap-markers models="markers" coords="'coords'">
+      <ui-gmap-google-map center='map.center' zoom='map.zoom' options='map.options'>
+
+          <script type="text/ng-template" id="control.tpl.html">
+          <button class=" btn-large waves-effect waves-light red huge" ng-class="{'btn-warning': danger}" ng-click="controlClick()"><h4>{{controlText}}</h4></button>
+          </script>
+        <ui-gmap-map-control template="control.tpl.html" position="top-right" controller="controlCtrl" index="-1"></ui-gmap-map-control>
+
+        <ui-gmap-markers models="markers" coords="'coords'"  options="markers.options" click='onClick'>
       </ui-gmap-markers>
+      <ui-gmap-windows
+        templateUrl = "public/eachSquid.html"
+        models="markers"
+        coords="'coords'"
+        show= "'show'"
+        templateParameter="marker"
+      >
+      <div ng-non-bindable>
+      <img height = "500px" src = '{{img_paths}}'></img>
+    </div>
+
+      </ui-gmap-windows>
         </ui-gmap-google-map>
         </div>
 
