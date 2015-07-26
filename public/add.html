@@ -25,6 +25,10 @@
         .dragover {
         border: 5px dashed blue;
         }
+        .hugest{
+          min-height: 10%;
+          min-width: 100%;
+        }
     </style>
     <script src="bower_components/angular/angular.min.js"></script>
       <script src="bower_components/ng-file-upload/ng-file-upload-shim.js"></script>
@@ -35,6 +39,7 @@
     <script src='https:maps.googleapis.com/maps/api/js?sensor=false'></script>
     <script src='bower_components/angular-google-maps/dist/angular-google-maps.min.js'></script>
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <link rel="stylesheet" href="/bower_components/materialize/css/materialize.min.css">
     <script src="locationpicker.js"></script>
     <script src="squidApp.js"></script>
   </head>
@@ -48,7 +53,7 @@
         Latitude<input type="latitude" ng-model="squid.lat" id="squidLat">
         Longitude<input type="longitude" ng-model="squid.long" id="squidLong" </br></br>
         </div>
-        <input  type="file"  ngf-select ng-model="files"  ngf-capture="'camera'" ngf-reset-on-click="true" >Select File</input>
+        <button  class=" btn-large waves-effect waves-light red hugest" ngf-select ng-model="files"  ngf-capture="'camera'" ngf-reset-on-click="true" label:><h4> Select File</h4></button>
         <!-- <input ng-click="press" accept="image/*" ngf-select="" ng-model="miles" name="file" class="ng-pristine ng-valid ng-scope" __ngf_gen__="true" href="/"> -->
 
       </div>

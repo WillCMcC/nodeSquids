@@ -29,7 +29,7 @@
           }
           .huge{
             min-height: 10%;
-            min-width: 25%
+            min-width: 100%;
           }
       </style>
       <script src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
@@ -56,7 +56,7 @@
           <script type="text/ng-template" id="control.tpl.html">
           <button class=" btn-large waves-effect waves-light red huge" ng-class="{'btn-warning': danger}" ng-click="controlClick()"><h4>{{controlText}}</h4></button>
           </script>
-        <ui-gmap-map-control template="control.tpl.html" position="top-right" controller="controlCtrl" index="-1"></ui-gmap-map-control>
+        <ui-gmap-map-control template="control.tpl.html" position="bottom-center" controller="controlCtrl" index="-1"></ui-gmap-map-control>
 
         <ui-gmap-markers models="markers" coords="'coords'"  options="markers.options" click='onClick'>
       </ui-gmap-markers>
