@@ -35,8 +35,12 @@ $scope.map = {
         show: false
       }
         obj.onClick = function(a,b,c){
+            for(var i = 0; i < $scope.markers.length;i++){
+              $scope.markers[i].show = false;
+            }
             console.log(a)
             a.model.show = !a.model.show;
+
 
         }
         $scope.markers.push(obj);
