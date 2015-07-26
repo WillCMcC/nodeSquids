@@ -58,7 +58,7 @@
           </script>
         <ui-gmap-map-control template="control.tpl.html" position="bottom-center" controller="controlCtrl" index="-1"></ui-gmap-map-control>
 
-        <ui-gmap-markers models="markers" coords="'coords'"  options="markers.options" click='onClick'>
+        <ui-gmap-markers models="markers" coords="'coords'"  options="markers.options" click='onClick' icon="{url: 'marker.png'}">
       </ui-gmap-markers>
       <ui-gmap-windows
         templateUrl = "public/eachSquid.html"
@@ -68,7 +68,7 @@
         templateParameter="marker"
       >
       <div ng-non-bindable>
-      <img height = "500px" src = '{{img_paths}}'></img>
+      <img height = "400px" src = '{{img_paths}}'></img>
     </div>
 
       </ui-gmap-windows>

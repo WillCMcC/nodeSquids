@@ -96,7 +96,8 @@ apirouter.route('/test')
 						});
 						squid.save(function (err, data) {
 						if (err) console.log(err);
-						else console.log('Saved : ', data );
+						// else console.log('Saved : ', data );
+						console.log(req.files.file.path);
 						fs.unlink(req.files.file.path);
 						});
 				});
