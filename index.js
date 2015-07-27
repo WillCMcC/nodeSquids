@@ -25,7 +25,7 @@ app.use(express.static(__dirname + '/public'));
 
 //Mongo Intialization
 
-mongoose.connect('mongodb://localhost/squidMaps3');
+mongoose.connect('mongodb://localhost/realMap');
 var db = mongoose.connection;
 db.on('error', function (err) {
 	console.log('connection error', err);
