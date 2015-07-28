@@ -31,6 +31,13 @@
             min-height: 10%;
             min-width: 100%;
           }
+          .rotate90 {
+              -webkit-transform: rotate(90deg);
+              -moz-transform: rotate(90deg);
+              -o-transform: rotate(90deg);
+              -ms-transform: rotate(90deg);
+              transform: rotate(90deg);
+          }
       </style>
       <script src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
       <script src="bower_components/angular/angular.min.js"></script>
@@ -68,7 +75,7 @@
         templateParameter="marker"
       >
       <div ng-non-bindable>
-      <img height = "400px" src = '{{img_paths}}'></img>
+      <img height = "400px" src = '{{img_paths}}' class = 'rotate90'></img>
     </div>
 
       </ui-gmap-windows>
