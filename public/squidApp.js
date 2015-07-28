@@ -64,6 +64,7 @@ app.controller('buttonCtrl', [
 'Upload',
 '$window',
 function($scope, $http, Upload, $window){
+    debugger;
   var userLoc = {};
   $scope.controlText = 'Add Squid';
   $scope.$watch('files', function () {
