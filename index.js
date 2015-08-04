@@ -101,7 +101,7 @@ apirouter.route('/test')
 						});
 				});
 			});
-
+			res.send("success");
 
 			})
 

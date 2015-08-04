@@ -96,7 +96,8 @@ app.controller('buttonCtrl', [
 'Upload',
 '$window',
 'location',
-function($scope, $http, Upload, $window, location){
+ '$route',
+function($scope, $http, Upload, $window, location, $route){
 
   $scope.controlText = 'Add Squid';
   $scope.refresh = true;
@@ -125,6 +126,7 @@ function($scope, $http, Upload, $window, location){
         });
         file.upload.success(function (data, status, headers, config) {
             console.log("ayy")
+            $window.location.reload();
         });
   };
 }
