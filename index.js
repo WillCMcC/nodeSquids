@@ -86,7 +86,6 @@ apirouter.route('/test')
 				var nameString = "/public/pictures/"
 				nameString += req.files.file.name;
 				newerPath =  __dirname +  nameString;
-				console.log(nameString);
 			  fs.writeFile(newerPath, data, function (err) {
 					if(err){console.log(err)}
 					var squid = new Squid({
@@ -97,7 +96,7 @@ apirouter.route('/test')
 						squid.save(function (err, data) {
 						if (err) console.log(err);
 						// else console.log('Saved : ', data );
-						console.log(req.files.file.path);
+						console.log(squid);
 						fs.unlink(req.files.file.path);
 						});
 				});
@@ -128,4 +127,4 @@ viewRoutes.route('/all_squids')
 .get(function(req, res) {
 			res.sendfile('./public/all_squids.html');
 });
-app.use('/', viewRoutes);
+app.use('/view/', viewRoutes);

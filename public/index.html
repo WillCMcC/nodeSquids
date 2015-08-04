@@ -58,12 +58,12 @@
 
     </head>
     <body ng-app='squidApp' ng-controller="MainCtrl">
-      <ui-gmap-google-map center='map.center' zoom='map.zoom' options='map.options' >
+      <ui-gmap-google-map control="map.control" refresh="refresh" center='map.center' zoom='map.zoom' options='map.options' >
 
           <script type="text/ng-template" id="control.tpl.html">
-          <button ngf-select ng-model="files"  ngf-capture="'camera'" class=" btn-large waves-effect waves-light blue huge" ng-controller="buttonCtrl" ngf-multiple="true"  ><h4>{{controlText}}</h4></button>
+          <button   ngf-select ng-model="files"   ngf-capture="'camera'"  class=" btn-large waves-effect waves-light blue huge" ng-controller="buttonCtrl" ngf-multiple="true"  ><h4>{{controlText}}</h4></button>
           </script>
-        <ui-gmap-map-control  template="control.tpl.html" position="bottom-center"  index="-1" ></ui-gmap-map-control>
+        <ui-gmap-map-control ng-if="mylocation" template="control.tpl.html"  position="bottom-center" controller="buttonCtrl" index="-1"  ></ui-gmap-map-control>
 
         <ui-gmap-markers models="markers" coords="'coords'"  options="markers.options" click='onClick' icon="{url: 'marker2.svg'}">
       </ui-gmap-markers>
