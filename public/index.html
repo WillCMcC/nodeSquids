@@ -37,6 +37,16 @@
               -o-transform: rotate(90deg);
               -ms-transform: rotate(90deg);
               transform: rotate(90deg);
+          }.tall{
+            display:flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-content: flex-start;
+            align-items: flex-start;
+          }.titleImg{
+            width: 700px;
+            height: auto;
           }
       </style>
       <script src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
@@ -74,8 +84,13 @@
         show= "'show'"
         templateParameter="marker"
       >
-      <div ng-non-bindable>
-      <img height = "400px" src = '{{img_paths}}' class = 'rotate90'></img>
+      <div ng-non-bindable class="tall">
+      <img  src = '{{img_paths}}' class = 'rotate90 titleImg'></img>
+      <br></br><br></br>
+      <button   class=" btn-large waves-effect waves-light blue huge"  ><p3>Gallery</p3></button>
+      <br></br><br></br>
+      <button   class=" btn-large waves-effect waves-light blue huge"  ><p3>Add Picture</p3></button>
+
     </div>
 
       </ui-gmap-windows>
