@@ -11,7 +11,7 @@
           /* Firefox */
           -webkit-appearance: button;
           /* Safari and Chrome */
-          padding: 10px;
+          padding: 20px;
           margin: 10px;
           width: 70px;
           }
@@ -37,6 +37,14 @@
               -o-transform: rotate(90deg);
               -ms-transform: rotate(90deg);
               transform: rotate(90deg);
+              max-height: 250px;
+              overflow: hidden;
+          }.windowBox{
+            height: 500px;
+            width: 600px;
+            overflow: hidden;
+          }.colossal{
+            width: 100%;
           }
       </style>
       <script src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
@@ -50,9 +58,12 @@
       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
       <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
       <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+      <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
       <link rel="stylesheet" href="/bower_components/materialize/css/materialize.min.css">
+      <script src="bower_components/materialize/js/materialize.min.js"></script>
       <script src="locationpicker.js"></script>
       <script src="squidApp.js"></script>
+
 
 
 
@@ -61,23 +72,32 @@
       <ui-gmap-google-map control="map.control" refresh="refresh" center='map.center' zoom='map.zoom' options='map.options' >
 
           <script type="text/ng-template" id="control.tpl.html">
-          <button   ngf-select ng-model="files"   ngf-capture="'camera'"  class=" btn-large waves-effect waves-light blue huge" ng-controller="buttonCtrl" ngf-multiple="true"  ><h4>{{controlText}}</h4></button>
+          <button   ngf-select ng-model="files"   ngf-capture='camera'  class=" btn-large waves-effect waves-light blue huge" ng-controller="buttonCtrl" ngf-multiple="true"  ><h4>{{controlText}}</h4></button>
           </script>
-        <ui-gmap-map-control ng-if="mylocation" template="control.tpl.html"  position="bottom-center" controller="buttonCtrl" index="-1"  ></ui-gmap-map-control>
+        <ui-gmap-map-control capture="camera" ng-if="mylocation" template="control.tpl.html"  position="bottom-center" controller="buttonCtrl" index="-1"  ></ui-gmap-map-control>
 
         <ui-gmap-markers models="markers" coords="'coords'"  options="markers.options" click='onClick' icon="{url: 'marker2.svg'}">
       </ui-gmap-markers>
       <ui-gmap-windows
-        templateUrl = "public/eachSquid.html"
         models="markers"
         coords="'coords'"
         show= "'show'"
-        templateParameter="marker"
-      >
-      <div ng-non-bindable>
-      <img height = "400px" src = '{{img_paths}}' class = 'rotate90'></img>
-    </div>
+        class="colossal"
+    >
+      <div ng-non-bindable >
+        <div class = "row windowBox">
+           <div class="col-12">
+             <img src = '{{img_paths}}' height="400px"></img>
+           </div>
+            <div class="col-12">
+              <button  class=" btn-large waves-effect waves-light blue huge" ><p>Test</p></button>
+              <br>
+              <button  class=" btn-large waves-effect waves-light blue huge" ><p>Test</p></button>
+            </div>
+        </div>
 
+
+    </div>
       </ui-gmap-windows>
         </ui-gmap-google-map>
         </div>

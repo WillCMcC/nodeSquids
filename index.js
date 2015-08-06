@@ -9,6 +9,9 @@ var multipart = require('connect-multiparty');
 var fs = require('fs');
 var multipartMiddleware = multipart();
 var app = express();
+var piexif = require("piexifjs");
+var Jimp = require("jimp");
+
 
 
 //Server
@@ -82,25 +85,47 @@ apirouter.route('/test')
 		apirouter.route('/new_squid')
 		.post( multipartMiddleware, function(req, res, next) {
 			var newerPath ;
-			fs.readFile(req.files.file.path, function (err, data) {
-				var nameString = "/public/pictures/"
-				nameString += req.files.file.name;
-				newerPath =  __dirname +  nameString;
-			  fs.writeFile(newerPath, data, function (err) {
-					if(err){console.log(err)}
-					var squid = new Squid({
-						lat : req.body.latitude,
-						long: req.body.longitude,
-						img_paths: "/pictures/" + req.files.file.name,
-						});
-						squid.save(function (err, data) {
-						if (err) console.log(err);
-						// else console.log('Saved : ', data );
-						console.log(squid);
-						fs.unlink(req.files.file.path);
-						});
+		fs.readFile(req.files.file.path, function (err, data) {
+			var exifbytes = piexif.dump(data);
+			console.log(exifbytes["0th"]);
+		});
+			var squidder = new Jimp(req.files.file.path, function(err, img){
+				this.rotate( 90 );
+				this.write(req.files.file.path);
+				fs.readFile(req.files.file.path, function (err, data) {
+					var nameString = "/public/pictures/"
+					nameString += req.files.file.name;
+					newerPath =  __dirname +  nameString;
+
+
+					// var pic = data;
+					// var picData = data.toString("binary")
+					// var exifObj = piexif.load(picData);
+					//
+
+					//  zeroth[piexif.ImageIFD.Orientation] = 2;
+					//  var newData = {"0th":zeroth, "Exif":exif, "GPS":gps};
+					//  var exifbytes = piexif.dump(newData);
+					//  var photos = piexif.insert(exifbytes, picData);
+					// var squidPic = new Buffer(photos, "binary");
+
+				  fs.writeFile(newerPath, data, function (err) {
+						if(err){console.log(err)}
+						var squid = new Squid({
+							lat : req.body.latitude,
+							long: req.body.longitude,
+							img_paths: "/pictures/" + req.files.file.name,
+							});
+							squid.save(function (err, data) {
+							if (err) console.log(err);
+							// else console.log('Saved : ', data );
+							console.log(squid);
+							fs.unlink(req.files.file.path);
+							});
+					});
 				});
-			});
+			})
+
 			res.send("success");
 
 			})

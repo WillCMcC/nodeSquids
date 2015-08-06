@@ -62,8 +62,8 @@ $scope.squid = {};
           longitude: data[i].long,
         },
         img_paths: data[i].img_paths[0],
-
-        show: false
+        show: false,
+        templateUrl:"/eachSquid.html"
       }
         obj.onClick = function(a,b,c){
             for(var i = 0; i < $scope.markers.length;i++){
