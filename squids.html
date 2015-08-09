@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <title>Squids</title>
+    <style>
+    .rotate90 {
+        -webkit-transform: rotate(90deg);
+        -moz-transform: rotate(90deg);
+        -o-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        transform: rotate(90deg);
+    }.flex-container {
+    display:flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+    align-items: flex-start;
+    }
+    </style>
+    <script src="../bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
+    <script src="../bower_components/angular/angular.min.js"></script>
+    <script src="../bower_components/underscore/underscore-min.js"></script>
+    <script src="../bower_components/ng-file-upload/ng-file-upload.min.js"></script>
+    <script src="../bower_components/lodash/lodash.min.js"></script>
+    <script src="../bower_components/angular-route/angular-route.min.js"></script>
+    <script src='https:maps.googleapis.com/maps/api/js?sensor=false'></script>
+    <script src='../bower_components/angular-google-maps/dist/angular-google-maps.min.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../bower_components/materialize/css/materialize.min.css">
+    <script src="../squidApp.js"></script>
+  </head>
+  <body ng-app='squidApp' ng-controller="squidCtrl" >
+    <div ng-repeat="squid in squids" ng-show="show{{$index}}">
+      <div class='flex-container'>
+      <div class="row">
+        <div class="col s12 m7">
+          <div class="card">
+            <div class="card-image">
+              <img  src = '{{squid.img_paths[0]}}'  ></img>
+              <span class="card-title">Card Title</span>
+            </div>
+            <div class="card-content">
+              <p>I am a very simple card. I am good at containing small bits of information.
+              I am convenient because I require little markup to use effectively.</p>
+            </div>
+            <div class="card-action">
+              <a href="#">This is a link</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+  </body>
+</html>

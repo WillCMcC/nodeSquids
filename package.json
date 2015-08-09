@@ -12,7 +12,9 @@
     "bower": "^1.4.1",
     "connect-multiparty": "^2.0.0",
     "express": "^4.12.2",
+    "imgur": "^0.1.6",
     "mongoose": "^3.8.24",
+    "piexifjs": "^1.0.0",
     "underscore": "^1.8.3"
   }
 }

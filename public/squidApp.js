@@ -1,3 +1,4 @@
+
 var app = angular.module('squidApp', ['ngRoute', 'uiGmapgoogle-maps', 'ngFileUpload']);
 
 app.service('location', function () {
@@ -35,6 +36,7 @@ var userLoc = {};
 $scope.mylocation = false;
 $scope.refresh = false;
 
+
 navigator.geolocation.getCurrentPosition(function(position) {
   userLoc.lat = position.coords.latitude;
   userLoc.lng = position.coords.longitude;
@@ -62,8 +64,8 @@ $scope.squid = {};
           longitude: data[i].long,
         },
         img_paths: data[i].img_paths[0],
-
-        show: false
+        show: false,
+        templateUrl:"/eachSquid.html"
       }
         obj.onClick = function(a,b,c){
             for(var i = 0; i < $scope.markers.length;i++){
@@ -90,6 +92,7 @@ $scope.squid = {};
     }
 
 ]);
+
 app.controller('buttonCtrl', [
 '$scope',
 '$http',
@@ -106,6 +109,7 @@ function($scope, $http, Upload, $window, location, $route){
       uploadUsingUpload($scope.files);
     }
   });
+
 
 
   userLoc = location.getLocation();
