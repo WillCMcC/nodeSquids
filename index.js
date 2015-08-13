@@ -83,7 +83,7 @@ var apirouter = express.Router();              // get an instance of the express
 // middleware to use for all requests
 apirouter.use(function(req, res, next) {
     // do logging
-    console.log('Something is happening.');
+    console.log('Something is .');
     next(); // make sure we go to the next routes and don't stop here
 });
 
@@ -94,7 +94,26 @@ apirouter.route('/test')
         Squid.find(function(err, squids) {
             if (err)
                 res.send(err);
-            res.json(squids);
+
+            for(var i=0;i<squids.length;i++){
+              var imgurl = squids[i]["img_paths"][0];
+              var imgCode = imgurl.slice(19, -4);
+
+              imgur.getInfo(imgCode)
+                .then(function(json, squids) {
+                  // console.log(json)
+                   console.log(squids[i]["img_paths"][0])
+                   if(i== (squids.length - 1)){
+                     res.send(squids);
+                   }
+              })
+              .catch(function (err) {
+                console.error(err.message);
+              });
+            }
+
+
+
         });
 
 		apirouter.route('/new_squid')
