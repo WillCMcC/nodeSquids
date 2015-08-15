@@ -7,23 +7,15 @@ var express = require("express");
 var mongoose = require("mongoose");
 var multipart = require('connect-multiparty');
 var fs = require('fs');
+
 var multipartMiddleware = multipart();
 var app = express();
+
 var piexif = require("piexifjs");
 var Jimp = require("jimp");
 var imgur = require('imgur');
 
-// imgur Intialization
 
-var imgurAlbum
-imgur.createAlbum()
-    .then(function(json) {
-        console.log(json);
-				imgurAlbum = json.data.deletehash;
-    })
-    .catch(function (err) {
-        console.error(err.message);
-    });
 
 
 
@@ -57,7 +49,7 @@ var Schema = mongoose.Schema;
 var squidSchema = new Schema({
 	lat : Number,
 	long : Number,
-	img_paths: Array,
+	album: String,
 });
 
 // Schema to DB Model
@@ -88,88 +80,114 @@ apirouter.use(function(req, res, next) {
 });
 
 
-apirouter.route('/test')
+apirouter.route('/all')
 
 	.get(function(req, res) {
+    imgur.setClientId('c495aa665a64c56');
+    imgur.setCredentials('squidmapSF@gmail.com', 'Zamar123', 'c495aa665a64c56');
         Squid.find(function(err, squids) {
-            if (err)
-                res.send(err);
+            if (err){res.send(err)};
 
-            for(var i=0;i<squids.length;i++){
-              var imgurl = squids[i]["img_paths"][0];
-              var imgCode = imgurl.slice(19, -4);
+            var responseArr = [];
+            var counter = 0;
 
-              imgur.getInfo(imgCode)
-                .then(function(json, squids) {
-                  // console.log(json)
-                   console.log(squids[i]["img_paths"][0])
-                   if(i== (squids.length - 1)){
-                     res.send(squids);
-                   }
+            for(var i = 0 ;i<squids.length;i++){
+              var album = squids[i].album;
+              var squidId = i;
+              imgur.getAlbumInfo(album)
+              .then(function(json) {
+                eachObj = {}
+                eachObj.albumData = json
+                eachObj.dbData = squids[squidId];
+                responseArr.push(eachObj);
+
+                if(responseArr.length == squids.length){
+                  res.json(responseArr);
+                }
               })
               .catch(function (err) {
                 console.error(err.message);
               });
+
             }
 
+        })});
+
+// add img to squid
+apirouter.route('/new_image')
+.post( multipartMiddleware, function(req, res, next) {
+  var newerPath ;
+  // imgur stuff
+  imgur.setClientId('c495aa665a64c56');
+  imgur.setCredentials('squidmapSF@gmail.com', 'Zamar123', 'c495aa665a64c56');
+
+                // save squid
+                imgur.uploadFile(req.files.file.path, req.body.album)
+                    .then(function (json) {
+                        fs.unlink(req.files.file.path);
+                        // console.log(json)
+                        res.send("success");
+                    }
 
 
-        });
 
+            )
+            .catch(function (err) {
+                console.error(err.message);
+            });
+
+
+
+
+
+
+  })
+
+// new squid
 		apirouter.route('/new_squid')
 		.post( multipartMiddleware, function(req, res, next) {
 			var newerPath ;
 			// imgur stuff
-			imgur.setClientId('9ed2f79c3a04e08');
-			imgur.uploadFile(req.files.file.path, imgurAlbum)
-			    .then(function (json) {
-			        console.log(json.data.link);
-							var squid = new Squid({
-								lat : req.body.latitude,
-								long: req.body.longitude,
-								img_paths: [json.data.link],
-								});
-								squid.save(function (err, data) {
-								if (err) console.log(err);
-								// else console.log('Saved : ', data );
-								console.log(squid);
-								fs.unlink(req.files.file.path);
-								});
-								res.send("success");
+			imgur.setClientId('c495aa665a64c56');
+      imgur.setCredentials('squidmapSF@gmail.com', 'Zamar123', 'c495aa665a64c56');
+
+            // imgur Intialization
+            imgur.createAlbum()
+                .then(function(json) {
+            				imgurAlbum = json.data.id;
+
+                    // save squid
+                    imgur.uploadFile(req.files.file.path, imgurAlbum)
+              			    .then(function (json) {
+                          var squid = new Squid({
+                            lat : req.body.latitude,
+                            long: req.body.longitude,
+                            album: imgurAlbum,
+                            });
+                            squid.save(function (err, data) {
+                            if (err) console.log(err);
+                            // else console.log('Saved : ', data );
+                            fs.unlink(req.files.file.path);
+                            });
+                            res.send("success");
+                        }
+
+
+
+                )
+                .catch(function (err) {
+                    console.error(err.message);
+                });
+
 
 			    })
 			    .catch(function (err) {
 			        console.error(err.message);
 			    });
 
-				// fs.readFile(req.files.file.path, function (err, data) {
-				// 	var nameString = "/public/pictures/"
-				// 	nameString += req.files.file.name;
-				// 	newerPath =  __dirname +  nameString;
-				//
-				//
-				//
-				// 	// var pic = data;
-				// 	// var picData = data.toString("binary")
-				// 	// var exifObj = piexif.load(picData);
-				// 	//
-				//
-				// 	//  zeroth[piexif.ImageIFD.Orientation] = 2;
-				// 	//  var newData = {"0th":zeroth, "Exif":exif, "GPS":gps};
-				// 	//  var exifbytes = piexif.dump(newData);
-				// 	//  var photos = piexif.insert(exifbytes, picData);
-				// 	// var squidPic = new Buffer(photos, "binary");
-				//
-				//   fs.writeFile(newerPath, data, function (err) {
-				// 		if(err){console.log(err)}
-				//
-				// 	});
-				// });
+			});
 
 
-			})
-
-	});
 
 // more routes for our API will happen here
 

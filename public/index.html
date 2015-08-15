@@ -71,7 +71,6 @@
       <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
       <link rel="stylesheet" href="/bower_components/materialize/css/materialize.min.css">
       <script src="bower_components/materialize/js/materialize.min.js"></script>
-      <script src="locationpicker.js"></script>
       <script src="squidApp.js"></script>
 
 
@@ -88,22 +87,27 @@
 
         <ui-gmap-markers models="markers" coords="'coords'"  options="markers.options" click='onClick' icon="{url: 'marker2.svg'}">
       </ui-gmap-markers>
-      <ui-gmap-windows
-        models="markers"
-        coords="'coords'"
-        show= "'show'"
+      <ui-gmap-window
+        coords="activeCoordinates"
+        show= "show"
         templateParameter="marker"
+        closeClick="test"
       >
-        <div ng-non-bindable class="tall">
-        <img  src = '{{img_paths}}' class="titleImg" ></img>
-        <button    class=" btn-large waves-effect waves-light blue huge"  ><p3>Add Picture</p3></button>
+        <div  class="tall">
+          <div>
+        <img  src = '{{currImage}}' class="titleImg" >
+
+        <button   ngf-select ng-model="albums"   ngf-capture='camera'  class=" btn-large waves-effect waves-light blue huge" ng-controller="addPictureCtrl" ngf-multiple="true"  ><h4>Add Picture</h4></button>
+
 
 
 
         </div>
+      </div>
 
 
-      </ui-gmap-windows>
+
+      </ui-gmap-window>
         </ui-gmap-google-map>
         </div>
 
