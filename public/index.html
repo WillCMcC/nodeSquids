@@ -85,7 +85,7 @@
           </script>
         <ui-gmap-map-control capture="camera" ng-if="mylocation" template="control.tpl.html"  position="bottom-center" controller="buttonCtrl" index="-1"  ></ui-gmap-map-control>
 
-        <ui-gmap-markers models="markers" coords="'coords'"  options="markers.options" click='onClick' icon="{url: 'marker2.svg'}">
+        <ui-gmap-markers models="markers" coords="'coords'"  options="markers.options" click='onClick' icon="{url: 'marker2.svg'}" idKey="id">
       </ui-gmap-markers>
       <ui-gmap-window
         coords="activeCoordinates"
@@ -95,7 +95,7 @@
       >
         <div  class="tall">
           <div>
-        <img  src = '{{currImage}}' class="titleImg" >
+        <img  src = '{{currImage}}' class="titleImg" ng-click="$parent.nextImage()" >
         <button   ngf-select ng-model="albums"   ngf-capture='camera'  class=" btn-large waves-effect waves-light blue huge" ng-controller="addPictureCtrl" ngf-multiple="true"  ><h4>Add Picture</h4></button>
 
 

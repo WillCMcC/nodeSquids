@@ -56,7 +56,6 @@ $scope.mylocation = false;
 $scope.refresh = false;
 
 $scope.currImage = "";
-$scope.currAlbum = "";
 
 
 
@@ -80,33 +79,42 @@ $scope.show = false;
 $scope.markers = [];
   $http.get('/api/markers').
   success(function(data, status, headers, config) {
-    console.log(data);
-    $scope.squids = data;
-    $scope.markers.options = {
-    }
+    console.log(data)
     if(data.length != 0){
-      for(var i=0;i<data.length;i++){
+      for(squid in data){
       var obj = {
-        id: i,
+        id: squid,
         coords: {
-          latitude: data[i].lat,
-          longitude: data[i].long,
+          latitude: data[squid].lat,
+          longitude: data[squid].long,
         },
-        image: data[i].img_link,
-        squid: data[i].squid,
+        images: data[squid].images,
         show: false,
       }
         obj.onClick = function(a,b,c){
               $scope.show = true;
               console.log(a);
+              var counter = 0;
+              var maxLength = a.model.images.length ;
+              console.log(maxLength);
               $scope.activeCoordinates = a.model.coords;
-              $scope.currImage = a.model.image;
+              $scope.currImage = a.model.images[counter];
+              $scope.nextImage = function(){
+                  counter ++;
+                  if(counter < maxLength){
+                    $scope.currImage = a.model.images[counter]
+                  }else{
+                    counter = 0;
+                    $scope.currImage = a.model.images[counter]
+                  }
+              }
               a.model.show = true;
-              markerInfo.setSquid(a.model.squid)
+              markerInfo.setSquid(a.model.id)
         }
         $scope.markers.push(obj);
       }
       }
+
   }).
   error(function(data, status, headers, config) {
     // called asynchronously if an error occurs
@@ -201,5 +209,29 @@ function($scope, $http, Upload, $window, location, $route, markerInfo){
             $window.location.reload();
         });
   };
+}
+]);
+
+app.controller('galleryControl', [
+'$scope',
+'$http',
+'Upload',
+'$window',
+'location',
+ '$route',
+ 'markerInfo',
+function($scope, $http, Upload, $window, location, $route, markerInfo){
+
+  $scope.markers = [];
+    $http.get('/api/markers').
+    success(function(data, status, headers, config) {
+      console.log(data);
+    }).
+    error(function(data, status, headers, config) {
+      // called asynchronously if an error occurs
+      // or server returns response with an error status.
+    });
+
+
 }
 ]);

@@ -11,8 +11,7 @@ var fs = require('fs');
 var multipartMiddleware = multipart();
 var app = express();
 
-var piexif = require("piexifjs");
-var Jimp = require("jimp");
+
 var imgur = require('imgur');
 
 
@@ -74,8 +73,22 @@ apirouter.route('/markers')
 
 	.get(function(req, res) {
         Squid.find(function(err, squids) {
+					console.log(squids)
             if (err){res.send(err)};
-            res.json(squids);
+						var squidObj = {};
+					for(var i = 0; i < squids.length; i++){
+						if(!squidObj.hasOwnProperty(squids[i].squid)){
+							squidObj[squids[i].squid] = {
+								'images' : [squids[i].img_link],
+								"lat" : squids[i].lat,
+								"long" : squids[i].long,
+								"id" : squids[i].squid
+							}
+						}else{
+							squidObj[squids[i].squid].images.push(squids[i].img_link)
+						}
+					}
+            res.json(squidObj);
         })
         });
 
