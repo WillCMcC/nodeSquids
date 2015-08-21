@@ -130,11 +130,12 @@ apirouter.route('/markers')
 // new squid
 		apirouter.route('/new_squid')
 		.post( multipartMiddleware, function(req, res, next) {
-			var counter ;
+			var counter = 0;
 			var newerPath ;
 			// imgur stuff
 			imgur.setClientId('c495aa665a64c56');
 			Squid.count(function(err, c){
+
 					counter = c;
 			});
             // imgur Intialization
@@ -146,7 +147,7 @@ apirouter.route('/markers')
                             lat : req.body.latitude,
                             long: req.body.longitude,
                             img_link: json.data.link,
-														squid: counter + 1,
+														squid: counter += 1,
                             });
 														console.log(squid);
                             squid.save(function (err, data) {
