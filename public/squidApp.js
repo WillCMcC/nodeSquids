@@ -12,14 +12,21 @@ app.service('location', function () {
             }
         };
     });
-    app.service('currentAlbum', function () {
+    app.service('markerInfo', function () {
             var album = {};
+            var squid = {};
             return {
                 getAlbum: function () {
                     return album;
                 },
                 setAlbum: function(value) {
                     album = value;
+                },
+                getSquid: function(){
+                  return squid;
+                },
+                setSquid: function(value){
+                  squid = value;
                 }
             };
         });
@@ -30,8 +37,8 @@ app.controller('MainCtrl', [
 'Upload',
 '$window',
 'location',
-'currentAlbum',
-function($scope, $http, Upload, $window, location, currentAlbum){
+'markerInfo',
+function($scope, $http, Upload, $window, location, markerInfo){
 $scope.map = {
   center: { latitude: 37.79, longitude: -122.420868 },
   zoom: 13,
@@ -71,7 +78,7 @@ navigator.geolocation.getCurrentPosition(function(position) {
 $scope.squid = {};
 $scope.show = false;
 $scope.markers = [];
-  $http.get('/api/all').
+  $http.get('/api/markers').
   success(function(data, status, headers, config) {
     console.log(data);
     $scope.squids = data;
@@ -82,25 +89,21 @@ $scope.markers = [];
       var obj = {
         id: i,
         coords: {
-          latitude: data[i].dbData.lat,
-          longitude: data[i].dbData.long,
+          latitude: data[i].lat,
+          longitude: data[i].long,
         },
-        images: data[i].albumData.data.images,
-        album: data[i].albumData.data.id,
+        image: data[i].img_link,
+        squid: data[i].squid,
         show: false,
-        templateUrl:"/eachSquid.html"
       }
         obj.onClick = function(a,b,c){
               $scope.show = true;
+              console.log(a);
               $scope.activeCoordinates = a.model.coords;
-              $scope.currImage = a.model.images[0].link
-              currentAlbum.setAlbum(a.model.album)
-
-            a.model.show = true;
-
-
+              $scope.currImage = a.model.image;
+              a.model.show = true;
+              markerInfo.setSquid(a.model.squid)
         }
-
         $scope.markers.push(obj);
       }
       }
@@ -149,8 +152,6 @@ function($scope, $http, Upload, $window, location, $route){
         });
         file.upload.progress(function (evt) {
             // Math.min is to fix IE which reports 200% sometimes
-            file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-            console.log(file.progress)
         });
         file.upload.success(function (data, status, headers, config) {
             $window.location.reload();
@@ -165,8 +166,8 @@ app.controller('addPictureCtrl', [
 '$window',
 'location',
  '$route',
- 'currentAlbum',
-function($scope, $http, Upload, $window, location, $route, currentAlbum){
+ 'markerInfo',
+function($scope, $http, Upload, $window, location, $route, markerInfo){
 
   $scope.controlText = 'Add Squid';
 
@@ -181,12 +182,14 @@ function($scope, $http, Upload, $window, location, $route, currentAlbum){
 
 
   function addToAlbum(files) {
+      console.log(markerInfo.getSquid())
         var file = files;
-        var theAlb = $scope.currAlbum
         file.upload = Upload.upload({
             url: '/api/new_image',
             fields: {
-                'album': currentAlbum.getAlbum()
+                'squid': markerInfo.getSquid(),
+                'lat': location.getLocation().lat,
+                'long': location.getLocation().lng,
             },
             file: file
         });
