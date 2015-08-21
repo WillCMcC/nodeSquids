@@ -73,7 +73,7 @@ apirouter.route('/markers')
 
 	.get(function(req, res) {
         Squid.find(function(err, squids) {
-					if(typeOf squids !== "undefined"){
+					if(typeof squids !== "undefined"){
 					console.log(squids)
             if (err){res.send(err)};
 						var squidObj = {};
