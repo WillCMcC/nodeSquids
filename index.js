@@ -34,7 +34,7 @@ app.use(express.static(__dirname + '/public'));
 
 //Mongo Intialization
 
-mongoose.connect('ds035503.mongolab.com:35503/heroku_wb5mrk1g');
+mongoose.connect('will:pass@ds035503.mongolab.com:35503/heroku_wb5mrk1g');
 var db = mongoose.connection;
 db.on('error', function (err) {
 	console.log('connection error', err);
@@ -73,8 +73,6 @@ apirouter.route('/markers')
 
 	.get(function(req, res) {
         Squid.find(function(err, squids) {
-					if(typeof squids !== "undefined"){
-					console.log(squids)
             if (err){res.send(err)};
 						var squidObj = {};
 
@@ -91,7 +89,7 @@ apirouter.route('/markers')
 						}
 					}
             res.json(squidObj);
-        }
+
 				})
         });
 
@@ -130,13 +128,12 @@ apirouter.route('/markers')
 // new squid
 		apirouter.route('/new_squid')
 		.post( multipartMiddleware, function(req, res, next) {
-			var counter = 0;
+			var counter ;
 			var newerPath ;
 			// imgur stuff
 			imgur.setClientId('c495aa665a64c56');
 			Squid.count(function(err, c){
-
-					counter = c;
+					counter = c
 			});
             // imgur Intialization
 						console.log(req.body);
@@ -147,7 +144,7 @@ apirouter.route('/markers')
                             lat : req.body.latitude,
                             long: req.body.longitude,
                             img_link: json.data.link,
-														squid: counter += 1,
+														squid: counter + 1,
                             });
 														console.log(squid);
                             squid.save(function (err, data) {

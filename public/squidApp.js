@@ -79,7 +79,6 @@ $scope.show = false;
 $scope.markers = [];
   $http.get('/api/markers').
   success(function(data, status, headers, config) {
-    console.log(data)
     if(data.length != 0){
       for(squid in data){
       var obj = {
@@ -93,10 +92,8 @@ $scope.markers = [];
       }
         obj.onClick = function(a,b,c){
               $scope.show = true;
-              console.log(a);
               var counter = 0;
               var maxLength = a.model.images.length ;
-              console.log(maxLength);
               $scope.activeCoordinates = a.model.coords;
               $scope.currImage = a.model.images[counter];
               $scope.nextImage = function(){
@@ -183,14 +180,12 @@ function($scope, $http, Upload, $window, location, $route, markerInfo){
 
     $scope.$watch('albums', function(newValue, oldValue) {
       if (newValue != undefined) {
-        console.log("ayy")
         addToAlbum($scope.albums);
       }
     });
 
 
   function addToAlbum(files) {
-      console.log(markerInfo.getSquid())
         var file = files;
         file.upload = Upload.upload({
             url: '/api/new_image',
@@ -205,7 +200,6 @@ function($scope, $http, Upload, $window, location, $route, markerInfo){
             // Math.min is to fix IE which reports 200% sometimes
         });
         file.upload.success(function (data, status, headers, config) {
-          console.log("did it!")
             $window.location.reload();
         });
   };
@@ -225,7 +219,6 @@ function($scope, $http, Upload, $window, location, $route, markerInfo){
   $scope.markers = [];
     $http.get('/api/markers').
     success(function(data, status, headers, config) {
-      console.log(data);
     }).
     error(function(data, status, headers, config) {
       // called asynchronously if an error occurs
