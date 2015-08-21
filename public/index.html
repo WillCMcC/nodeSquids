@@ -96,7 +96,7 @@
         <div  class="tall">
           <div>
         <img  src = '{{currImage}}' class="titleImg" ng-click="$parent.nextImage()" >
-        <button   ngf-select ng-model="albums"   ngf-capture='camera'  class=" btn-large waves-effect waves-light blue huge" ng-controller="addPictureCtrl" ngf-multiple="true"  ><h4>Add Picture</h4></button>
+        <button   type="file" accept="image/*" capture="camera" ngf-select ng-model="albums"  class=" btn-large waves-effect waves-light blue huge" ng-controller="addPictureCtrl" ngf-multiple="true" ngf-capture="camera" ><h4>Add Picture</h4></button>
 
 
 
