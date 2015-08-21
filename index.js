@@ -73,9 +73,11 @@ apirouter.route('/markers')
 
 	.get(function(req, res) {
         Squid.find(function(err, squids) {
+					if(typeOf squids !== "undefined"){
 					console.log(squids)
             if (err){res.send(err)};
 						var squidObj = {};
+
 					for(var i = 0; i < squids.length; i++){
 						if(!squidObj.hasOwnProperty(squids[i].squid)){
 							squidObj[squids[i].squid] = {
@@ -89,7 +91,8 @@ apirouter.route('/markers')
 						}
 					}
             res.json(squidObj);
-        })
+        }
+				})
         });
 
 // add img to squid
