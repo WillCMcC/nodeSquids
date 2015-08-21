@@ -34,7 +34,7 @@ app.use(express.static(__dirname + '/public'));
 
 //Mongo Intialization
 
-mongoose.connect('mongodb://localhost/realMap');
+mongoose.connect('ds035503.mongolab.com:35503/heroku_wb5mrk1g');
 var db = mongoose.connection;
 db.on('error', function (err) {
 	console.log('connection error', err);
