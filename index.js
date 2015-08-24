@@ -23,6 +23,16 @@ var imgur = require('imgur');
 //Server
 var server = http.createServer(app);
 
+// set env
+var env = process.argv[2] || 'dev';
+switch (env) {
+    case 'dev':
+        var mongoDatabase = 'mongodb://localhost/realMap';
+        break;
+    case 'prod':
+        var mongoDatabase = 'will:pass@ds035503.mongolab.com:35503/heroku_wb5mrk1g';
+        break;
+}
 
 
 server.listen(process.env.PORT || port, function(){
@@ -34,7 +44,7 @@ app.use(express.static(__dirname + '/public'));
 
 //Mongo Intialization
 
-mongoose.connect('will:pass@ds035503.mongolab.com:35503/heroku_wb5mrk1g');
+mongoose.connect( mongoDatabase);
 var db = mongoose.connection;
 db.on('error', function (err) {
 	console.log('connection error', err);
