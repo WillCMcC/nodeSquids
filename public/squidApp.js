@@ -97,7 +97,7 @@ $scope.currImage = "";
 
 
 $scope.test = function(){
-  $scope.show = true;
+  $scope.show = false;
 }
 
 
