@@ -82,7 +82,7 @@
       <ui-gmap-google-map control="map.control" refresh="refresh" center='map.center' zoom='map.zoom' options='map.options' >
 
           <script type="text/ng-template" id="control.tpl.html">
-          <button style="display: none;" ng-show="tingObj.location2" ngf-select ng-model="files"   ngf-capture='camera'  class=" btn-large waves-effect waves-light blue huge" ngf-multiple="true" id="addPicture" ><h4>Upload Picture at Squid</h4></button>
+          <button capture="camera" style="display: none;" ng-show="tingObj.location2" ngf-select ng-model="files"   ngf-capture='camera'  class=" btn-large waves-effect waves-light blue huge" ngf-multiple="true" id="addPicture" ><h4>Upload Picture at Squid</h4></button>
           </script>
 
           <script type="text/ng-template" id="control2.tpl.html">
