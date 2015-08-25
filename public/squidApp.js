@@ -62,6 +62,7 @@ $scope.map = {
   zoom: 13,
   options: {
     mapTypeControl: false,
+    overviewMapControl: true,
 
   },
   control: {},
@@ -175,12 +176,12 @@ function($scope, $http, Upload, $window, location, $route){
 
   $scope.addClick = function(){
     console.log("test")
-    
-    document.getElementById("addPicture").style.display = "block"
+
 
     navigator.geolocation.getCurrentPosition(function(position) {
 
       $scope.buttonObj.location = false;
+      document.getElementById("addPicture").style.display = "inline"
 
 
       console.log($scope.buttonObj);

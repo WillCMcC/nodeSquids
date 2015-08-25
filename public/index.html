@@ -91,7 +91,7 @@
 
         <div>
           <ui-gmap-map-control  controller="buttonCtrl"   template="control2.tpl.html"  position="bottom-center"  ></ui-gmap-map-control>
-          <ui-gmap-map-control controller="buttonCtrl"  capture="camera"  template="control.tpl.html"  position="bottom-center"  ></ui-gmap-map-control>
+          <ui-gmap-map-control controller="buttonCtrl"  capture="camera"  template="control.tpl.html"  position="bottom-center"  index="-1" ></ui-gmap-map-control>
         </div>
 
       <ui-gmap-markers models="markers" coords="'coords'"  options="'options'" click='onClick' icon="{url: 'SquidMarker.png'}" idKey="id" control="markerControl"></ui-gmap-markers>
