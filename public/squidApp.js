@@ -3,13 +3,28 @@ var app = angular.module('squidApp', ['ngRoute', 'uiGmapgoogle-maps', 'ngFileUpl
 
 app.service('location', function () {
         var loc = {};
+        var map = {};
+        var markers = {};
         return {
             getLocation: function () {
                 return loc;
             },
             setLocation: function(value) {
                 loc = value;
-            }
+            },
+            setMap: function(value){
+              map = value;
+            },
+            getMap: function(){
+              return map;
+            },
+            getMarkers: function(){
+              return markers;
+            },
+            setMarkers: function(value){
+              markers = value;
+            },
+            showButton: false,
         };
     });
     app.service('markerInfo', function () {
@@ -27,7 +42,9 @@ app.service('location', function () {
                 },
                 setSquid: function(value){
                   squid = value;
-                }
+                },
+
+
             };
         });
 
@@ -38,7 +55,8 @@ app.controller('MainCtrl', [
 '$window',
 'location',
 'markerInfo',
-function($scope, $http, Upload, $window, location, markerInfo){
+'uiGmapIsReady',
+function($scope, $http, Upload, $window, location, markerInfo, uiGmapIsReady){
 $scope.map = {
   center: { latitude: 37.79, longitude: -122.420868 },
   zoom: 13,
@@ -50,9 +68,27 @@ $scope.map = {
 
 
 };
+
+
+
+
+
+$scope.markerControl = {};
+
+
+
+uiGmapIsReady.promise()
+    .then(function (map_instances) {
+      console.log("ostensibly ready")
+      location.setMap($scope.map)
+      location.setMarkers($scope.markerControl)
+
+    });
+
+
 $window.MY_SCOPE = $scope;
+
 var userLoc = {};
-$scope.mylocation = false;
 $scope.refresh = false;
 
 $scope.currImage = "";
@@ -60,19 +96,10 @@ $scope.currImage = "";
 
 
 $scope.test = function(){
-  $scope.show = false;
+  $scope.show = t;
 }
 
-navigator.geolocation.getCurrentPosition(function(position) {
-  userLoc.lat = position.coords.latitude;
-  userLoc.lng = position.coords.longitude;
-  $scope.mylocation = true;
-  $scope.refresh = true;
-  location.setLocation(userLoc);
-  var map = $scope.map.control.getGMap();
-  map.setZoom(18);
-  map.setCenter(userLoc);
-});
+
 
 $scope.squid = {};
 $scope.show = false;
@@ -89,6 +116,7 @@ $scope.markers = [];
         },
         images: data[squid].images,
         show: false,
+
       }
         obj.onClick = function(a,b,c){
               $scope.show = true;
@@ -134,6 +162,63 @@ app.controller('buttonCtrl', [
  '$route',
 function($scope, $http, Upload, $window, location, $route){
 
+
+  $scope.buttonObj = {
+    location: true,
+  };
+  $scope.tingObj = {
+    location2: true,
+  };
+
+
+
+
+  $scope.addClick = function(){
+    console.log("test")
+    
+    document.getElementById("addPicture").style.display = "block"
+
+    navigator.geolocation.getCurrentPosition(function(position) {
+
+      $scope.buttonObj.location = false;
+
+
+      console.log($scope.buttonObj);
+
+
+      var realMap = location.getMap().control.getGMap()
+      var markers = location.getMarkers()
+
+      var obj = {
+        id: 1,
+        coords: {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        },
+        options: {
+          draggable: true,
+          title: "Set Location"
+         },
+      }
+        obj.onClick = function(a,b,c){
+              console.log(location.getMarkers().getGMarkers()[0].position)
+              $scope.show = true;
+              var counter = 0;
+              $scope.activeCoordinates = a.model.coords;
+              a.model.show = true;
+        }
+
+
+      markers.newModels([obj])
+      userLoc.lat = position.coords.latitude;
+      userLoc.lng = position.coords.longitude;
+      $scope.refresh = true;
+      location.setLocation(userLoc);
+      realMap.setZoom(18);
+      realMap.setCenter(userLoc);
+    });
+  }
+
   $scope.controlText = 'Add Squid';
   $scope.refresh = true;
   $scope.$watch('files', function (newValue) {
@@ -144,14 +229,19 @@ function($scope, $http, Upload, $window, location, $route){
 
 
 
+
+  $window.MY_SCOPE2 = $scope;
+
+
   userLoc = location.getLocation();
+
   function uploadUsingUpload(files) {
         var file = files[0];
         file.upload = Upload.upload({
             url: '/api/new_squid',
             fields: {
-                'latitude': userLoc.lat,
-                'longitude': userLoc.lng
+                'latitude': location.getMarkers().getGMarkers()[0].position.G,
+                'longitude': location.getMarkers().getGMarkers()[0].position.K
             },
             file: file
         });

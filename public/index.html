@@ -78,15 +78,24 @@
 
     </head>
     <body ng-app='squidApp' ng-controller="MainCtrl">
+
       <ui-gmap-google-map control="map.control" refresh="refresh" center='map.center' zoom='map.zoom' options='map.options' >
 
           <script type="text/ng-template" id="control.tpl.html">
-          <button   ngf-select ng-model="files"   ngf-capture='camera'  class=" btn-large waves-effect waves-light blue huge" ng-controller="buttonCtrl" ngf-multiple="true"  ><h4>{{controlText}}</h4></button>
+          <button style="display: none;" ng-show="tingObj.location2" ngf-select ng-model="files"   ngf-capture='camera'  class=" btn-large waves-effect waves-light blue huge" ngf-multiple="true" id="addPicture" ><h4>Upload Picture at Squid</h4></button>
           </script>
-        <ui-gmap-map-control capture="camera" ng-if="mylocation" template="control.tpl.html"  position="bottom-center" controller="buttonCtrl" index="-1"  ></ui-gmap-map-control>
 
-        <ui-gmap-markers models="markers" coords="'coords'"  options="markers.options" click='onClick' icon="{url: 'SquidMarker.png'}" idKey="id">
-      </ui-gmap-markers>
+          <script type="text/ng-template" id="control2.tpl.html">
+          <button  ng-show="buttonObj.location" class=" btn-large waves-effect waves-light blue huge" ng-click="addClick()"  ><h4>Get Location + Zoom</h4></button>
+          </script>
+
+        <div>
+          <ui-gmap-map-control  controller="buttonCtrl"   template="control2.tpl.html"  position="bottom-center"  ></ui-gmap-map-control>
+          <ui-gmap-map-control controller="buttonCtrl"  capture="camera"  template="control.tpl.html"  position="bottom-center"  ></ui-gmap-map-control>
+        </div>
+
+      <ui-gmap-markers models="markers" coords="'coords'"  options="'options'" click='onClick' icon="{url: 'SquidMarker.png'}" idKey="id" control="markerControl"></ui-gmap-markers>
+
       <ui-gmap-window
         coords="activeCoordinates"
         show= "show"
