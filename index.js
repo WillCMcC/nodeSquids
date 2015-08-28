@@ -7,6 +7,7 @@ var express = require("express");
 var mongoose = require("mongoose");
 var multipart = require('connect-multiparty');
 var fs = require('fs');
+var Twitter = require('twitter');
 
 var multipartMiddleware = multipart();
 var app = express();
@@ -15,6 +16,14 @@ var app = express();
 var imgur = require('imgur');
 
 
+
+
+var client = new Twitter({
+  consumer_key: 'X5eCHte2RATTHYIR6AFRpexpK',
+  consumer_secret: 'sOc3defPu7uKWh6xHHeWmmMaSu6RaE26lQGF3ddT9Ew5otFeOO',
+  access_token_key: '3329781613-Rqy3kncZNPwmB1tWTtec0zODmSbXvwRCT1T5J9v',
+  access_token_secret: 'Nru2xSmeg9Nv5vKl4zGsIpvcDy4reAp5YCuxJDAC2FpSy'
+});
 
 
 
@@ -156,6 +165,18 @@ apirouter.route('/markers')
                             img_link: json.data.link,
 														squid: counter + 1,
                             });
+                            console.log("Lat: " + req.body.latitude)
+                            client.post('statuses/update', {
+                              status: 'New Squid! ' + json.data.link,
+                              lat: req.body.latitude,
+                              long: req.body.longitude,
+                              display_coordinates: true,
+                             },  function(error, tweet, response){
+                              if(error) throw error;
+                              console.log(tweet);  // Tweet body.
+
+                            });
+
 														console.log(squid);
                             squid.save(function (err, data) {
                             if (err) console.log(err);
