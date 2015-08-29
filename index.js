@@ -133,7 +133,6 @@ apirouter.route('/markers')
 							lat : req.body.lat,
 							long: req.body.long,
 							img_link: json.data.link,
-							squid: req.body.squid,
 						});
 						console.log(squid);
 						squid.save(function (err, data) {

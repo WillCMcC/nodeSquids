@@ -135,7 +135,13 @@ $scope.markers = [];
                   }
               }
               a.model.show = true;
-              markerInfo.setSquid(a.model.id)
+              console.log(a.model)
+              var latLng = {
+                lat: a.model.coords.latitude,
+                long: a.model.coords.longitude,
+              }
+              console.log(latLng);
+              markerInfo.setSquid(latLng);
         }
         $scope.markers.push(obj);
       }
@@ -281,9 +287,8 @@ function($scope, $http, Upload, $window, location, $route, markerInfo){
         file.upload = Upload.upload({
             url: '/api/new_image',
             fields: {
-                'squid': markerInfo.getSquid(),
-                'lat': location.getLocation().lat,
-                'long': location.getLocation().lng,
+                'lat': markerInfo.getSquid().lat,
+                'long': markerInfo.getSquid().long
             },
             file: file
         });
