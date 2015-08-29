@@ -96,7 +96,7 @@ apirouter.route('/markers')
 						var squidObj = {};
 
 					for(var i = 0; i < squids.length; i++){
-						if(!squidObj.hasOwnProperty(squids[i].squid)){
+						if(!squidObj.hasOwnProperty(squids[i].lat)){
 							squidObj[squids[i].squid] = {
 								'images' : [squids[i].img_link],
 								"lat" : squids[i].lat,
@@ -104,7 +104,7 @@ apirouter.route('/markers')
 								"id" : squids[i].squid
 							}
 						}else{
-							squidObj[squids[i].squid].images.push(squids[i].img_link)
+							squidObj[squids[i].lat].images.push(squids[i].img_link)
 						}
 					}
             res.json(squidObj);
