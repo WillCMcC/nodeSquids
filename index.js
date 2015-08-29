@@ -94,17 +94,22 @@ apirouter.route('/markers')
         Squid.find(function(err, squids) {
             if (err){res.send(err)};
 						var squidObj = {};
-
+            var squidCounter = 0;
 					for(var i = 0; i < squids.length; i++){
 						if(!squidObj.hasOwnProperty(squids[i].lat)){
-							squidObj[squids[i].squid] = {
+							squidObj[squids[i].lat] = {
 								'images' : [squids[i].img_link],
 								"lat" : squids[i].lat,
 								"long" : squids[i].long,
-								"id" : squids[i].squid
+								"id" : squidCounter
 							}
+              squidCounter ++ ;
 						}else{
-							squidObj[squids[i].lat].images.push(squids[i].img_link)
+              if(squids[i].lat != undefined){
+                var latter = squids[i].lat;
+                squidObj[squids[i].lat].images.push(squids[i].img_link)
+
+              }
 						}
 					}
             res.json(squidObj);
